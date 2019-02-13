@@ -1,17 +1,58 @@
 import cv2 as cv
 import numpy as np
 cap = cv.VideoCapture(0)
-cv.namedWindow("Video")
+#cv.namedWindow("Video")
+
+#capture each frame
+_, frame = cap.read()
+
+#turn image to gray
+gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+
+#get grayscale with dimensions
+weight, height, channel = frame.shape
+
+print(weight,height,channel)
+#get 3 channel image 32float
+
+#float32
+flooo = np.zeros((weight,height,3), dtype = np.float32)
+
+#black and white image
+bw = np.zeros((weight,height,1), dtype = np.uint8)
+
+#copy/clone image
+copied = frame.copy
+
+
 
 while True:
-    #capture each frame
-    _, frame = cap.read()
-
-    gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     
     status, img = cap.read()
-    cv.imshow("Video", img)
+
+    cv.imshow("video",img)
+    cv.imshow("gray",gray)
+##    cv.imshow("flooo",flooo)
+##    cv.imshow("bw",bw)
+
+    # absolute difference
+    # abs_video = cv.AbsDiff(channel_r,channel_g,channel_b)
+    
+    
     k = cv.waitKey(5) & 0xFF
     if k == 27:
         break
 cv.destroyAllWindows()
+
+
+#absolute difference on the image?
+#grab new frame, what image should we brighten?
+#blur what image? any?
+#accumulateWeighted?
+#diff between any 2 images?
+#convert to grayscale
+#threshhold grayscale
+#find contours of?
+#draw polygons of the blobs or draw random polygon blobs?
+#
+#
