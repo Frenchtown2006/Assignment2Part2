@@ -16,28 +16,43 @@ print(weight,height,channel)
 #get 3 channel image 32float
 
 #float32
-flooo = np.zeros((weight,height,3), dtype = np.float32)
-
-#black and white image
-bw = np.zeros((weight,height,1), dtype = np.uint8)
-
-#copy/clone image
-copied = frame.copy
-
+flooo = np.zeros((weight,height,3), np.float32)
+second = frame.copy()
 
 
 while True:
     
     status, img = cap.read()
 
-    cv.imshow("video",img)
-    cv.imshow("gray",gray)
-##    cv.imshow("flooo",flooo)
-##    cv.imshow("bw",bw)
+    # functinos for image
+    #accumulate weight
+    cv.accumulateWeighted(img, flooo, 0.320)
 
-    # absolute difference
-    # abs_video = cv.AbsDiff(channel_r,channel_g,channel_b)
-    
+    #convert from 32 to 8
+    cv.convertScaleAbs(flooo, second, 1.0, 0.0)
+
+    #get difference
+    difference = cv.absdiff(img, second)
+
+    #convert to gray
+    grayPic = cv.cvtColor(difference, cv.COLOR_BGR2GRAY)
+
+    #threshold 10
+    cv.threshold(grayPic, 10, 255,cv.THRESH_BINARY)
+
+
+    #blur image
+    cv.GaussianBlur(grayPic,(5,5),0)
+
+    #threshold 50
+    cv.threshold(grayPic, 50, 255,cv.THRESH_BINARY)
+
+    #contor
+
+
+    cv.imshow("video",img)
+    #cv.imshow("gray",gray)
+    cv.imshow("grayPic",grayPic)
     
     k = cv.waitKey(5) & 0xFF
     if k == 27:
