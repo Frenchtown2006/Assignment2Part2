@@ -12,7 +12,6 @@ gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 #get grayscale with dimensions
 weight, height, channel = frame.shape
 
-print(weight,height,channel)
 #get 3 channel image 32float
 
 #float32
@@ -45,29 +44,21 @@ while True:
     cv.GaussianBlur(grayPic,(5,5),0)
 
     #threshold 50
-    cv.threshold(grayPic, 50, 255,cv.THRESH_BINARY)
+    cv.threshold(grayPic, 160, 255,cv.THRESH_BINARY)
 
-    #contor
+    #contours
+    cont,_ = cv.findContours(grayPic, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 
+    #loop
+    for i in cont:
+        if cv.contourArea(i) > 500:
+            cv.drawContours(img, i, 3, (0, 255,0 ), 3)
 
+    cv.imshow("ghost",grayPic)
     cv.imshow("video",img)
-    #cv.imshow("gray",gray)
-    cv.imshow("grayPic",grayPic)
+    #cv.imshow("grayPic",grayPic)
     
     k = cv.waitKey(5) & 0xFF
     if k == 27:
         break
 cv.destroyAllWindows()
-
-
-#absolute difference on the image?
-#grab new frame, what image should we brighten?
-#blur what image? any?
-#accumulateWeighted?
-#diff between any 2 images?
-#convert to grayscale
-#threshhold grayscale
-#find contours of?
-#draw polygons of the blobs or draw random polygon blobs?
-#
-#
