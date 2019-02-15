@@ -50,10 +50,12 @@ while True:
     cont,_ = cv.findContours(grayPic, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 
     #loop
+    x,y,w,h = cv.boundingRect(grayPic)
+    
     for i in cont:
         if cv.contourArea(i) > 500:
-            cv.drawContours(img, i, 3, (0, 255,0 ), 3)
-
+            cv.rectangle(img,(x,y),(x+w ,y+h), (0, 255,0 ), 3)
+            cv.drawContours(img,i,1,(0,255,0),3)
     cv.imshow("ghost",grayPic)
     cv.imshow("video",img)
     #cv.imshow("grayPic",grayPic)
